@@ -1,6 +1,7 @@
 import re
+from typing import Final
 
-REPLACE_PAIRS = [
+REPLACE_PAIRS: Final = [
 	("ё", "е"),
 
 	("янв.", "январь"),
@@ -29,7 +30,7 @@ REPLACE_PAIRS = [
 ]
 
 # 24-го 5-й 31-e
-DATE_FORMS_REGEX = r"(\d{1,2})([-]{0,1}[а-я]{0,2})"
+DATE_FORMS_REGEX: Final = r"(\d{1,2})([-]{0,1}[а-я]{0,2})"
 
 def textFilter(sourceStr: str):
 	newStr = sourceStr.lower()

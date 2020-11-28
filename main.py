@@ -1,12 +1,13 @@
 from Date import *
 from csv_work.csv_read_write import (getSourceList, writeOutputResult)
 from filters.filter_main import mainFilters
+from typing import Final
 
 def createDateObjectsList(length):
 	return [Date() for _ in range(length)]
 
 def main():
-	sourceList = getSourceList()
+	sourceList: Final = getSourceList()
 
 	copySourceList = sourceList.copy()
 	datesList = createDateObjectsList(len(copySourceList))

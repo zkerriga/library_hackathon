@@ -1,10 +1,11 @@
 import datetime
+from typing import Final
 
 
 class Period(object):
 	"""docstring for Period"""
 
-	dateSeparator = '/'
+	dateSeparator: Final = '/'
 
 	def __init__(self, dataStart, dataEnd):
 		super(Period, self).__init__()
@@ -27,7 +28,9 @@ class WeekDay(enumerate):
 	Sunday = 6
 
 class Date(object):
-	"""docstring for Data"""
+	"""
+	This class handles processing and changing dates.
+	"""
 
 	def __init__(self):
 		super(Date, self).__init__()
