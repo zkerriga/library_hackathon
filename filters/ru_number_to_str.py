@@ -195,8 +195,8 @@ NUMBER = or_(
 	rule(NUM, MULTIPLIER.optional())
 ).interpretation(Number)
 
+globalExtractor = NumberExtractor()
 
 def replaceRuNumberToStr(strToReplace):
-	extractor = NumberExtractor()
-	replacedStr = extractor.replace_groups(strToReplace)
+	replacedStr = globalExtractor.replace_groups(strToReplace)
 	return replacedStr
