@@ -23,30 +23,31 @@ class Date(object):
 
 	def __init__(self):
 		super(Date, self).__init__()
-		self.now = datetime.datetime.now()
+		self._now = datetime.datetime.now()
 
-		self.year = int(self.now.year)
-		self.month = int(self.now.month)
-		self.day = int(self.now.day)
+		self._year = int(self._now.year)
+		self._month = int(self._now.month)
+		self._day = int(self._now.day)
 
-		self.weekDay = self.now.weekday()  # [0,6]
+		self._weekDay = self._now.weekday()  # [0,6]
 
-		if self.now.hour > 12:
-			self.partOfDay = PartOfDay.PM
+		if self._now.hour > 12:
+			self._partOfDay = PartOfDay.PM
 		else:
-			self.partOfDay = PartOfDay.AM
+			self._partOfDay = PartOfDay.AM
 
-		self.hours = int(self.now.hour)
-		self.minutes = int(self.now.minute)
-		self.seconds = int(self.now.second)
+		self._hours = int(self._now.hour)
+		self._minutes = int(self._now.minute)
+		self._seconds = int(self._now.second)
 
-		self.isLocked = False
+		self._isLocked = False
 
 	def isLocked(self):
-		return self.isLocked
+		return self._isLocked
 
 	def lock(self):
-		self.isLocked = True
+		self._isLocked = True
 
 	def __str__(self):
-		return f"{self.year}-{self.month}-{self.day}T{self.hours // 10}{self.hours % 10}:{self.minutes // 10}{self.minutes % 10}"
+		return f"{self._year}-{self._month}-{self._day}T{self._hours // 10}"\
+				+ f"{self._hours % 10}:{self._minutes // 10}{self._minutes % 10}"
