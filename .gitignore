@@ -1,3 +1,4 @@
 *.csv
 cases.py
 __pycache__
+.idea/

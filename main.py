@@ -1,19 +1,24 @@
 import csv
 from Date import *
 
-def main():
-	print("Start:")
-	text = ""
-
+def getSourceList():
 	with open("temporal-thesaurus-analytical-corpora-test.csv", 'r') as file:
 		reader = csv.reader(file)
-		for row in reader:
-			text += row[0] + ' ; '
+	return reader
+
+def createDateObjectsList(length):
+	return [Date() for _ in range(length)]
+
+def main():
+	sourceList = getSourceList()
+	datesList = createDateObjectsList(len(sourceList))
 
 def test():
 	date = Date()
 	print(date)
 
 if __name__ == "__main__":
-	# main()
+	print("Start:")
+
+	main()
 	test()
