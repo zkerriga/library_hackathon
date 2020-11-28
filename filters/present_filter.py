@@ -1,4 +1,5 @@
 import re
+from .utils import (green, red)
 
 PRESENT = ["сейчас", "сегод", "в настоящий момент"]
 
@@ -8,5 +9,5 @@ def presentFilter(sourceStr, dateObj):
 	for regex in PRESENT:
 		found = re.search(regex, sourceStr)
 		if found:
-			print(f"[+] PresentFilter -> {sourceStr}")
+			green(f"PresentFilter -> {sourceStr}")
 			dateObj.lock()
