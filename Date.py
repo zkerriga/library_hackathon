@@ -36,7 +36,9 @@ class Date(object):
 		super(Date, self).__init__()
 		self._dateWithTime = datetime.datetime.now()
 		self._setPartOfDay()
+
 		self._isLocked = False
+		self._timeExist = True
 
 	def isLocked(self):
 		return self._isLocked
@@ -45,19 +47,16 @@ class Date(object):
 		self._isLocked = True
 
 	def setTimeFromDateTimeObj(self, dateTimeObj: datetime.datetime):
-		if dateTimeObj.year:
-			self._dateWithTime.replace(year=dateTimeObj.year)
-		if dateTimeObj.month:
-			self._dateWithTime.replace(month=dateTimeObj.month)
-		if dateTimeObj.day:
-			self._dateWithTime.replace(day=dateTimeObj.day)
-		if dateTimeObj.hour:
+		self._dateWithTime.replace(year=dateTimeObj.year)
+		self._dateWithTime.replace(month=dateTimeObj.month)
+		self._dateWithTime.replace(day=dateTimeObj.day)
+
+		self._timeExist = dateTimeObj.hour and dateTimeObj.minute and dateTimeObj.second
+		if self._timeExist:
 			self._dateWithTime.replace(hour=dateTimeObj.hour)
-		if dateTimeObj.minute:
 			self._dateWithTime.replace(minute=dateTimeObj.minute)
-		if dateTimeObj.second:
 			self._dateWithTime.replace(second=dateTimeObj.second)
-		self._setPartOfDay()
+			self._setPartOfDay()
 		self.lock()
 
 	def _setPartOfDay(self):
@@ -67,8 +66,10 @@ class Date(object):
 			self._partOfDay = PartOfDay.AM
 
 	def __str__(self):
-		return f"{self._dateWithTime.year}-"\
+		out = f"{self._dateWithTime.year}-"\
 			+ f"{self._dateWithTime.month}-"\
-			+ f"{self._dateWithTime.day}T"\
-			+ f"{self._dateWithTime.hour // 10}{self._dateWithTime.hour % 10}:"\
-			+ f"{self._dateWithTime.minute // 10}{self._dateWithTime.minute % 10}"
+			+ f"{self._dateWithTime.day}"
+		if self._timeExist:
+			out += f"T{self._dateWithTime.hour // 10}{self._dateWithTime.hour % 10}:"\
+				+ f"{self._dateWithTime.minute // 10}{self._dateWithTime.minute % 10}"
+		return out
