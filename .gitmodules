@@ -1,0 +1,3 @@
+[submodule "dateparser"]
+	path = dateparser
+	url = git@github.com:zkerriga/dateparser.git
