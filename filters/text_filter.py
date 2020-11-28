@@ -30,7 +30,7 @@ REPLACE_PAIRS: Final = [
 ]
 
 # 24-го 5-й 31-e
-DATE_FORMS_REGEX: Final = r"(\d{1,2})([-]{0,1}[а-я]{0,2})"
+DATE_FORMS_REGEX: Final = r"(\d{1,2})([-]{0,1}[а-я]{1,2})"
 
 def textFilter(sourceStr: str):
 	newStr = sourceStr.lower()
