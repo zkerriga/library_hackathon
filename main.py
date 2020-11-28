@@ -7,18 +7,19 @@ def createDateObjectsList(length):
 
 def main():
 	sourceList = getSourceList()
-	datesList = createDateObjectsList(len(sourceList))
 
-	mainFilters(sourceList, datesList)
+	copySourceList = sourceList.copy()
+	datesList = createDateObjectsList(len(copySourceList))
+
+	mainFilters(copySourceList, datesList)
 
 	writeOutputResult(sourceList, datesList)
 
 def test():
-	date = Date()
-	print(date)
+	pass
 
 if __name__ == "__main__":
 	print("Start:")
 
 	main()
-	# test()
+	test()

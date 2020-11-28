@@ -1,20 +1,24 @@
 from .present_filter import presentFilter
 from .dateparser_filter import *
-from .utils import (green, red)
+from .text_filter import textFilter
+from .utils import (greenPrint, redPrint)
 
 def mainFilters(sourceList, datesList):
 	print("[+] Filters started!")
 	filtered: int = 0
 
 	for sourceStr, dateObj in zip(sourceList, datesList):
-		dateParserFilter(sourceStr, dateObj)
+		cleanStr = textFilter(sourceStr)
+		dateParserFilter(cleanStr, dateObj)
 		if not dateObj.isLocked():
-			presentFilter(sourceStr, dateObj)
+			presentFilter(cleanStr, dateObj)
 
 		if dateObj.isLocked():
 			filtered += 1
+		elif sourceStr != cleanStr:
+			redPrint(f"{sourceStr} -> {cleanStr}")
 		else:
-			red(sourceStr)
+			redPrint(f"{sourceStr}")
 
 	print(f"[+] Filtered {filtered} times!")
 	print("[+] Filters stopped!")
