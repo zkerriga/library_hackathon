@@ -28,19 +28,32 @@ REPLACE_PAIRS: Final = [
 
 	("(", ""),
 	(")", ""),
+
+	("ровно", ""),
 ]
 
 # 24-го 5-й 31-e
-DATE_FORMS_REGEX: Final = r"(\d{1,2})([-]{0,1}[а-я]{1,2})"
+NUMBER_WITH_HYPHEN: Final = r"(\d{1,2})([-]{0,1}[а-я]{1,2})"
+# день тому назад
+AGO_CLEAR: Final = r"(тому)( назад)"
+
+def simpleReplaces(newStr: str):
+	for case in REPLACE_PAIRS:
+		newStr = newStr.replace(case[0], case[1])
+	return newStr
+
+def clearNumbersWithHyphen(newStr: str):
+	found = re.search(NUMBER_WITH_HYPHEN, newStr)
+	if found:
+		newStr = newStr.replace(found[0], found[1])
+	found = re.search(AGO_CLEAR, newStr)
+	if found:
+		newStr = newStr.replace(found[0], found[2])
+	return newStr
 
 def textFilter(sourceStr: str):
 	newStr = sourceStr.lower()
-
-	for case in REPLACE_PAIRS:
-		newStr = newStr.replace(case[0], case[1])
-
-	found = re.search(DATE_FORMS_REGEX, newStr)
-	if found:
-		newStr = newStr.replace(found[0], found[1])
+	newStr = simpleReplaces(newStr)
+	newStr = clearNumbersWithHyphen(newStr)
 	newStr = replaceRuNumberToStr(newStr)
 	return newStr
