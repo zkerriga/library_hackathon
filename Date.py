@@ -40,5 +40,13 @@ class Date(object):
 		self.minutes = int(self.now.minute)
 		self.seconds = int(self.now.second)
 
+		self.isLocked = False
+
+	def isLocked(self):
+		return self.isLocked
+
+	def lock(self):
+		self.isLocked = True
+
 	def __str__(self):
 		return f"{self.year}-{self.month}-{self.day}T{self.hours // 10}{self.hours % 10}:{self.minutes // 10}{self.minutes % 10}"
