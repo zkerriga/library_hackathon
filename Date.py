@@ -18,6 +18,7 @@ class PartOfDay(enumerate):
 	AM = 0
 	PM = 1
 
+
 class WeekDay(enumerate):
 	Monday = 0
 	Tuesday = 1
@@ -27,6 +28,21 @@ class WeekDay(enumerate):
 	Saturday = 5
 	Sunday = 6
 
+
+def getDefaultDateTimeObj():
+	"""
+	Default time in this project: 2020-11-27T2:30
+	"""
+	return datetime.datetime(
+		year=2020,
+		month=11,
+		day=27,
+		hour=2,
+		minute=30,
+		second=0
+	)
+
+
 class Date(object):
 	"""
 	This class handles processing and changing dates.
@@ -34,11 +50,12 @@ class Date(object):
 
 	def __init__(self):
 		super(Date, self).__init__()
-		self._dateWithTime = datetime.datetime.now()
+		self._dateWithTime: datetime.datetime = getDefaultDateTimeObj()
 		self._setPartOfDay()
 
-		self._isLocked = False
-		self._timeExist = True
+		self._isLocked: bool = False
+		self._timeExist: bool = True
+		self._isQuarter: bool = False
 
 	def isLocked(self):
 		return self._isLocked
@@ -47,15 +64,19 @@ class Date(object):
 		self._isLocked = True
 
 	def setTimeFromDateTimeObj(self, dateTimeObj: datetime.datetime):
-		self._dateWithTime.replace(year=dateTimeObj.year)
-		self._dateWithTime.replace(month=dateTimeObj.month)
-		self._dateWithTime.replace(day=dateTimeObj.day)
+		self._dateWithTime = self._dateWithTime.replace(year=dateTimeObj.year)
+		self._dateWithTime = self._dateWithTime.replace(month=dateTimeObj.month)
+		self._dateWithTime = self._dateWithTime.replace(day=dateTimeObj.day)
 
-		self._timeExist = dateTimeObj.hour and dateTimeObj.minute and dateTimeObj.second
+		hasNotTime: bool = not bool(dateTimeObj.hour) and \
+						   not bool(dateTimeObj.minute) and \
+						   not bool(dateTimeObj.second)
+
+		self._timeExist = not hasNotTime
 		if self._timeExist:
-			self._dateWithTime.replace(hour=dateTimeObj.hour)
-			self._dateWithTime.replace(minute=dateTimeObj.minute)
-			self._dateWithTime.replace(second=dateTimeObj.second)
+			self._dateWithTime = self._dateWithTime.replace(hour=dateTimeObj.hour)
+			self._dateWithTime = self._dateWithTime.replace(minute=dateTimeObj.minute)
+			self._dateWithTime = self._dateWithTime.replace(second=dateTimeObj.second)
 			self._setPartOfDay()
 		self.lock()
 
@@ -65,11 +86,27 @@ class Date(object):
 		else:
 			self._partOfDay = PartOfDay.AM
 
+	def setQuarter(self, data_quarter: tuple):
+		month = data_quarter[0]
+		year = data_quarter[1]
+		if year:
+			self._dateWithTime = self._dateWithTime.replace(year=year)
+		self._dateWithTime = self._dateWithTime.replace(month=(month * 3))
+		self._isQuarter = True
+		self._isLocked = True
+
+	def _getQuartalString(self):
+		out = f"{self._dateWithTime.year}-" \
+			  + f"Q{self._dateWithTime.month // 3}"
+		return out
+
 	def __str__(self):
-		out = f"{self._dateWithTime.year}-"\
-			+ f"{self._dateWithTime.month}-"\
+		if self._isQuarter:
+			return self._getQuartalString()
+		out = f"{self._dateWithTime.year}-" \
+			+ f"{self._dateWithTime.month}-" \
 			+ f"{self._dateWithTime.day}"
 		if self._timeExist:
-			out += f"T{self._dateWithTime.hour // 10}{self._dateWithTime.hour % 10}:"\
-				+ f"{self._dateWithTime.minute // 10}{self._dateWithTime.minute % 10}"
+			out += f"T{self._dateWithTime.hour // 10}{self._dateWithTime.hour % 10}:" \
+				   + f"{self._dateWithTime.minute // 10}{self._dateWithTime.minute % 10}"
 		return out

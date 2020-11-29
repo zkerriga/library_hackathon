@@ -2,6 +2,7 @@ from .present_filter import presentFilter
 from .dateparser_filter import *
 from .text_filter import textFilter
 from .utils import (greenPrint, redPrint)
+from .quarter import getQuarter
 
 def mainFilters(sourceList, datesList):
 	print("[+] Filters started!")
@@ -9,7 +10,13 @@ def mainFilters(sourceList, datesList):
 
 	for sourceStr, dateObj in zip(sourceList, datesList):
 		cleanStr = textFilter(sourceStr)
-		dateParserFilter(cleanStr, dateObj)
+
+		quarter: tuple = getQuarter(cleanStr)
+		if quarter:
+			dateObj.setQuarter(quarter)
+
+		if not dateObj.isLocked():
+			dateParserFilter(cleanStr, dateObj)
 		if not dateObj.isLocked():
 			presentFilter(cleanStr, dateObj)
 
