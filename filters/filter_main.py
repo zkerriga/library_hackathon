@@ -29,3 +29,4 @@ def mainFilters(sourceList, datesList):
 
 	print(f"[+] Filtered {filtered} times! That is {round(filtered * 100 / len(sourceList))}%!")
 	print("[+] Filters stopped!")
+	return datesList
