@@ -4,21 +4,41 @@ from .text_filter import textFilter
 from .utils import (greenPrint, redPrint)
 from .quarter import getQuarter
 
+
+def convertStrToObjDate(strToConvert: str, dateObj):
+
+	cleanStr = textFilter(strToConvert)
+
+	if cleanStr.startswith("с "):
+		cleanStr = cleanStr[2:]
+	if not dateObj.isLocked():
+		dateParserFilter(cleanStr, dateObj)
+	if not dateObj.isLocked():
+		presentFilter(cleanStr, dateObj)
+
 def mainFilters(sourceList, datesList):
 	print("[+] Filters started!")
 	filtered: int = 0
 
 	for sourceStr, dateObj in zip(sourceList, datesList):
-		cleanStr = textFilter(sourceStr)
+		if " по " in sourceStr:
+			listEndStartPeriod: list = sourceStr.split(" по ")
+			startDateString: str = listEndStartPeriod[0]
+			endDateString: str = listEndStartPeriod[1]
+			convertStrToObjDate(startDateString, dateObj)
+			endObjDate = Date()
+			convertStrToObjDate(endDateString, endObjDate)
+			dateObj.setDateToPeriod(endObjDate)
+			greenPrint(f"Period Filter -> {sourceStr}")
 
-		quarter: tuple = getQuarter(cleanStr)
-		if quarter:
-			dateObj.setQuarter(quarter)
+		else:
+			cleanStr = textFilter(sourceStr)
 
-		if not dateObj.isLocked():
-			dateParserFilter(cleanStr, dateObj)
-		if not dateObj.isLocked():
-			presentFilter(cleanStr, dateObj)
+			quarter: tuple = getQuarter(cleanStr)
+			if quarter:
+				dateObj.setQuarter(quarter)
+
+			convertStrToObjDate(cleanStr, dateObj)
 
 		if dateObj.isLocked():
 			filtered += 1

@@ -56,6 +56,7 @@ class Date(object):
 		self._isLocked: bool = False
 		self._timeExist: bool = True
 		self._isQuarter: bool = False
+		self._dateForPeriod: Date = None
 
 	def isLocked(self):
 		return self._isLocked
@@ -100,13 +101,15 @@ class Date(object):
 			  + f"Q{self._dateWithTime.month // 3}"
 		return out
 
+	def setDateToPeriod(self, endObjDated: datetime.datetime):
+		self._dateForPeriod = endObjDated
+
 	def __str__(self):
 		if self._isQuarter:
 			return self._getQuartalString()
 		out = f"{self._dateWithTime.year}-" \
 			+ f"{self._dateWithTime.month}-" \
 			+ f"{self._dateWithTime.day}"
-		# if self._timeExist:
-		# 	out += f"T{self._dateWithTime.hour // 10}{self._dateWithTime.hour % 10}:" \
-		# 		   + f"{self._dateWithTime.minute // 10}{self._dateWithTime.minute % 10}"
+		if self._dateForPeriod:
+			out += f" - {self._dateForPeriod}"
 		return out
