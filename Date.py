@@ -55,6 +55,7 @@ class Date(object):
 
 		self._isLocked: bool = False
 		self._timeExist: bool = True
+		self._isQuarter: bool = False
 
 	def isLocked(self):
 		return self._isLocked
@@ -63,9 +64,9 @@ class Date(object):
 		self._isLocked = True
 
 	def setTimeFromDateTimeObj(self, dateTimeObj: datetime.datetime):
-		self._dateWithTime.replace(year=dateTimeObj.year)
-		self._dateWithTime.replace(month=dateTimeObj.month)
-		self._dateWithTime.replace(day=dateTimeObj.day)
+		self._dateWithTime = self._dateWithTime.replace(year=dateTimeObj.year)
+		self._dateWithTime = self._dateWithTime.replace(month=dateTimeObj.month)
+		self._dateWithTime = self._dateWithTime.replace(day=dateTimeObj.day)
 
 		hasNotTime: bool = not bool(dateTimeObj.hour) and \
 						   not bool(dateTimeObj.minute) and \
@@ -73,9 +74,9 @@ class Date(object):
 
 		self._timeExist = not hasNotTime
 		if self._timeExist:
-			self._dateWithTime.replace(hour=dateTimeObj.hour)
-			self._dateWithTime.replace(minute=dateTimeObj.minute)
-			self._dateWithTime.replace(second=dateTimeObj.second)
+			self._dateWithTime = self._dateWithTime.replace(hour=dateTimeObj.hour)
+			self._dateWithTime = self._dateWithTime.replace(minute=dateTimeObj.minute)
+			self._dateWithTime = self._dateWithTime.replace(second=dateTimeObj.second)
 			self._setPartOfDay()
 		self.lock()
 
@@ -85,10 +86,26 @@ class Date(object):
 		else:
 			self._partOfDay = PartOfDay.AM
 
-	def __str__(self):
+	def setQuarter(self, data_quarter: tuple):
+		month = data_quarter[0]
+		year = data_quarter[1]
+		if year:
+			self._dateWithTime = self._dateWithTime.replace(year=year)
+		self._dateWithTime = self._dateWithTime.replace(month=(month * 3))
+		self._isQuarter = True
+		self._isLocked = True
+
+	def _getQuartalString(self):
 		out = f"{self._dateWithTime.year}-" \
-			  + f"{self._dateWithTime.month}-" \
-			  + f"{self._dateWithTime.day}"
+			  + f"Q{self._dateWithTime.month // 3}"
+		return out
+
+	def __str__(self):
+		if self._isQuarter:
+			return self._getQuartalString()
+		out = f"{self._dateWithTime.year}-" \
+			+ f"{self._dateWithTime.month}-" \
+			+ f"{self._dateWithTime.day}"
 		if self._timeExist:
 			out += f"T{self._dateWithTime.hour // 10}{self._dateWithTime.hour % 10}:" \
 				   + f"{self._dateWithTime.minute // 10}{self._dateWithTime.minute % 10}"
