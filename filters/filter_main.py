@@ -5,10 +5,12 @@ from .utils import (greenPrint, redPrint)
 from .quarter import getQuarter
 
 
-def convertStrToObjDate(strToConver: str, dateObj):
+def convertStrToObjDate(strToConvert: str, dateObj):
 
-	cleanStr = textFilter(strToConver)
+	cleanStr = textFilter(strToConvert)
 
+	if cleanStr.startswith("с "):
+		cleanStr = cleanStr[2:]
 	if not dateObj.isLocked():
 		dateParserFilter(cleanStr, dateObj)
 	if not dateObj.isLocked():
@@ -38,12 +40,12 @@ def mainFilters(sourceList, datesList):
 
 			convertStrToObjDate(cleanStr, dateObj)
 
-			if dateObj.isLocked():
-				filtered += 1
-			elif sourceStr != cleanStr:
-				redPrint(f"{sourceStr} -> {cleanStr}")
-			else:
-				redPrint(f"{sourceStr}")
+		if dateObj.isLocked():
+			filtered += 1
+		elif sourceStr != cleanStr:
+			redPrint(f"{sourceStr} -> {cleanStr}")
+		else:
+			redPrint(f"{sourceStr}")
 
 	print(f"[+] Filtered {filtered} times! That is {round(filtered * 100 / len(sourceList))}%!")
 	print("[+] Filters stopped!")
