@@ -20,5 +20,5 @@ def mainFilters(sourceList, datesList):
 		else:
 			redPrint(f"{sourceStr}")
 
-	print(f"[+] Filtered {filtered} times!")
+	print(f"[+] Filtered {filtered} times! That is {round(filtered * 100 / len(sourceList))}%!")
 	print("[+] Filters stopped!")
