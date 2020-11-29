@@ -106,7 +106,7 @@ class Date(object):
 		out = f"{self._dateWithTime.year}-" \
 			+ f"{self._dateWithTime.month}-" \
 			+ f"{self._dateWithTime.day}"
-		if self._timeExist:
-			out += f"T{self._dateWithTime.hour // 10}{self._dateWithTime.hour % 10}:" \
-				   + f"{self._dateWithTime.minute // 10}{self._dateWithTime.minute % 10}"
+		# if self._timeExist:
+		# 	out += f"T{self._dateWithTime.hour // 10}{self._dateWithTime.hour % 10}:" \
+		# 		   + f"{self._dateWithTime.minute // 10}{self._dateWithTime.minute % 10}"
 		return out

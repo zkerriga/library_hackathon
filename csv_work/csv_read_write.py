@@ -11,7 +11,7 @@ def getSourceList():
 	return sourceList[1:]
 
 def writeOutputResult(sourceList, datesList):
-	result: Final = "result.csv"
+	result: Final = "submission.csv"
 
 	with open(result, 'w') as file:
 		writer: Final = csv.writer(file, delimiter=',', quoting=csv.QUOTE_ALL)
