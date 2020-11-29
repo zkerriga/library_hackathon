@@ -3,7 +3,6 @@ from .dateparser_filter import *
 from .text_filter import textFilter
 from .utils import (greenPrint, redPrint)
 from .quarter import getQuarter
-from .filter_period import createPeriod
 
 
 def convertStrToObjDate(strToConver: str, dateObj):
