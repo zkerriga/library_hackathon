@@ -17,10 +17,10 @@ def main():
 	writeOutputResult(sourceList, datesList)
 
 def test():
-	mainFilters(["сегодня"], Date())
+	mainFilters(["сегодня"], [Date()])
 
 if __name__ == "__main__":
 	print("Start:")
 
-	# main()
-	test()
+	main()
+	# test()

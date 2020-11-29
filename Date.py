@@ -18,6 +18,7 @@ class PartOfDay(enumerate):
 	AM = 0
 	PM = 1
 
+
 class WeekDay(enumerate):
 	Monday = 0
 	Tuesday = 1
@@ -49,11 +50,11 @@ class Date(object):
 
 	def __init__(self):
 		super(Date, self).__init__()
-		self._dateWithTime = getDefaultDateTimeObj()
+		self._dateWithTime: datetime.datetime = getDefaultDateTimeObj()
 		self._setPartOfDay()
 
-		self._isLocked = False
-		self._timeExist = True
+		self._isLocked: bool = False
+		self._timeExist: bool = True
 
 	def isLocked(self):
 		return self._isLocked
@@ -66,7 +67,11 @@ class Date(object):
 		self._dateWithTime.replace(month=dateTimeObj.month)
 		self._dateWithTime.replace(day=dateTimeObj.day)
 
-		self._timeExist = dateTimeObj.hour and dateTimeObj.minute and dateTimeObj.second
+		hasNotTime: bool = not bool(dateTimeObj.hour) and \
+						   not bool(dateTimeObj.minute) and \
+						   not bool(dateTimeObj.second)
+
+		self._timeExist = not hasNotTime
 		if self._timeExist:
 			self._dateWithTime.replace(hour=dateTimeObj.hour)
 			self._dateWithTime.replace(minute=dateTimeObj.minute)
@@ -81,10 +86,10 @@ class Date(object):
 			self._partOfDay = PartOfDay.AM
 
 	def __str__(self):
-		out = f"{self._dateWithTime.year}-"\
-			+ f"{self._dateWithTime.month}-"\
-			+ f"{self._dateWithTime.day}"
+		out = f"{self._dateWithTime.year}-" \
+			  + f"{self._dateWithTime.month}-" \
+			  + f"{self._dateWithTime.day}"
 		if self._timeExist:
-			out += f"T{self._dateWithTime.hour // 10}{self._dateWithTime.hour % 10}:"\
-				+ f"{self._dateWithTime.minute // 10}{self._dateWithTime.minute % 10}"
+			out += f"T{self._dateWithTime.hour // 10}{self._dateWithTime.hour % 10}:" \
+				   + f"{self._dateWithTime.minute // 10}{self._dateWithTime.minute % 10}"
 		return out
