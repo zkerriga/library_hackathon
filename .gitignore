@@ -2,3 +2,4 @@
 cases.py
 __pycache__
 .idea/
+output.json
