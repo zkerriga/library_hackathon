@@ -27,6 +27,21 @@ class WeekDay(enumerate):
 	Saturday = 5
 	Sunday = 6
 
+
+def getDefaultDateTimeObj():
+	"""
+	Default time in this project: 2020-11-27T2:30
+	"""
+	return datetime.datetime(
+		year=2020,
+		month=11,
+		day=27,
+		hour=2,
+		minute=30,
+		second=0
+	)
+
+
 class Date(object):
 	"""
 	This class handles processing and changing dates.
@@ -34,7 +49,7 @@ class Date(object):
 
 	def __init__(self):
 		super(Date, self).__init__()
-		self._dateWithTime = datetime.datetime.now()
+		self._dateWithTime = getDefaultDateTimeObj()
 		self._setPartOfDay()
 
 		self._isLocked = False
