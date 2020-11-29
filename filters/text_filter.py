@@ -4,32 +4,20 @@ from .ru_number_to_str import replaceRuNumberToStr
 
 REPLACE_PAIRS: Final = [
 	("ё", "е"),
-
-	("янв.", "январь"),
-	# ("", "февраль"),
-	# ("", "март"),
-	("апр.", "апрель"),
-	# ("", "май"),
-	# ("", "июнь"),
-	# ("", "июль"),
-	("авг.", "август"),
-	# ("", "сентябрь"),
-	("окт.", "октябрь"),
-	# ("", "ноябрь"),
-	("дек.", "декабрь"),
-
-	("пн.", "понедельник"),
-	("вт.", "вторник"),
-	("ср.", "среда"),
-	("чт.", "четверг"),
-	("пт.", "пятница"),
-	("сб.", "суббота"),
-	("вс.", "воскресенье"),
-
 	("(", ""),
 	(")", ""),
-
+	(" кв. ", " квартал "),
+	(" кв ", " квартал "),
 	("ровно", ""),
+	("за этот", "этот"),
+	("весь текущий", "текущий"),
+	("уходящий", "этот"),
+	("истекающий", "этот"),
+	("грядущий", "следующий"),
+	("предстоящий", "следующий"),
+	("в эту", "в"),
+	("последний день недели", "воскресенье"),
+	("ближайшее", "это"),
 ]
 
 # 24-го 5-й 31-e
@@ -51,9 +39,43 @@ def clearNumbersWithHyphen(newStr: str):
 		newStr = newStr.replace(found[0], found[2])
 	return newStr
 
+# ночью, в 4 часа
+NIGHT_REGEX: Final = r"((ночью|утром).*\s)(\d{1,2})(\s*час(а|ов|))"
+DAY_REGEX: Final = r"((вечером|днем).*\s)(\d{1,2})(\s*час(а|ов|))"
+
+def partOfDayReplaces(newStr: str):
+	found = re.match(NIGHT_REGEX, newStr)
+	if found:
+		newStr = newStr.replace(found.group(1), "")
+		return newStr
+	found = re.match(DAY_REGEX, newStr)
+	if found:
+		newStr = newStr.replace(found.group(1), "")
+		hour: int = int(found.group(2))
+		if hour < 12:
+			newStr = newStr.replace(found.group(2), f"{hour + 12}")
+		return newStr
+	return newStr
+
+ROMAN: Final = [
+	("IV ", "4 "),
+	("III ", "3 "),
+	("II ", "2 "),
+	("I ", "1 "),
+]
+
+def toArabicNumbers(newStr: str):
+	for fromStr, toStr in ROMAN:
+		newStr = newStr.replace(fromStr, toStr)
+	return newStr
+
 def textFilter(sourceStr: str):
-	newStr = sourceStr.lower()
+	newStr: str = toArabicNumbers(sourceStr)
+	newStr = newStr.lower()
 	newStr = simpleReplaces(newStr)
 	newStr = clearNumbersWithHyphen(newStr)
-	newStr = replaceRuNumberToStr(newStr)
+	replaced: str = replaceRuNumberToStr(newStr)
+	if replaced:
+		newStr = replaced
+	newStr = partOfDayReplaces(newStr)
 	return newStr
