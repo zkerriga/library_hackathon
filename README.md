@@ -11,6 +11,18 @@ After that, we used the [natasha](https://github.com/natasha/natasha) module to 
 
 In addition, we organized parsing of library data to extract **all possible** mentions of **dates** for each newspaper and put them in a convenient JSON-object.
 
+### Usage:
+When downloading the project, you must add a recursive flag:
+```
+git clone --recursive https://github.com/zkerriga/library_hackathon
+```
+
+Once the dataset is next to it, you can run the program:
+```
+python3 main.py
+```
+
+
 ### Team:
 * [Aleksandr Marakulin](https://github.com/pichkasik)
 * [Safiulin Evgenii](https://github.com/mainseo4all)
